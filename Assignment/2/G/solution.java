@@ -1,47 +1,60 @@
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
-
 public class solution {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter pw = new PrintWriter(System.out);
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
-        int partitions = Integer.parseInt(st.nextToken());
-        int [] arr = new int[n];
+        int total_partitions = Integer.parseInt(st.nextToken()) - 1; // max cuts allowed
+        int[] arr = new int[n];
 
         StringTokenizer num = new StringTokenizer(br.readLine());
-        int sum = 0;
-        for (int i =0; i< n; i++) {
+        long sum = 0;
+        int max_num = 0;
+        for (int i = 0; i < n; i++) {
             int k = Integer.parseInt(num.nextToken());
             arr[i] = k;
-            sum+=k;
+            sum += k;
+            if (k > max_num) max_num = k;
         }
 
-        int sub_count = 0;
-        int temp = 0;
-        for (int i = sum; i > 0; i--) {
-            sub_count = 0;
-            temp = 0;
-            for (int j = 0; j < n; j++) {
-                if (arr[j] + temp >= i) {
-                    temp = 0; 
-                    sub_count++;
-                    continue;
+        long left = max_num;
+        long right = sum;
+        long last_best = 0;
+
+        while (left <= right) {
+            long mid = (left + right) / 2;
+
+            int partition_count = 0; // number of cuts
+            long temp = 0;
+            boolean possible = true;
+
+            for (int i = 0; i < n; i++) {
+                if (temp + arr[i] > mid) {   // need a cut
+                    partition_count++;
+                    temp = arr[i];
+                    if (partition_count > total_partitions) {
+                        possible = false;
+                        break;
+                    }
+                } else {
+                    temp += arr[i];
                 }
-                temp += arr[j];
             }
 
-            if (sub_count > partitions-1) {
-                pw.println(i+1);
-                break;
+            if (possible && partition_count <= total_partitions) {
+                last_best = mid;   // feasible, try smaller
+                right = mid - 1;
+            } else {
+                left = mid + 1;    // infeasible, try larger
             }
         }
 
+        pw.println(last_best);
         pw.close();
     }
 }
