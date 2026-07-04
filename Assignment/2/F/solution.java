@@ -25,28 +25,19 @@ public class solution {
             long high = Long.parseLong(queries.nextToken());
 
             int low_idx = 0;
-            int high_idx = 0;
+            int high_idx = n;
 
             int l = 0;
             int r = n-1;
             while (l <= r) {
                 int mid = (l+r)/2;
                 
-                if (r - l == 1) {
-                    if (low <= arr[l]) {
-                        low_idx = l;
-                        
-                    }
-                    else {
-                        low_idx = r;
-                    }
-                    break;
-                }
-                if (low < arr[mid]) {
-                    r = mid;
+                if (low <= arr[mid]) {
+                    r = mid-1;
+                    low_idx = mid;
                 }
                 else {
-                    l = mid;
+                    l = mid+1;
                 }
             }
 
@@ -54,20 +45,12 @@ public class solution {
             r = n-1;
             while (l <= r) {
                 int mid = (l+r)/2;
-                if (r - l == 1) {
-                    if (high >= arr[r] ) {
-                        high_idx = r;
-                    }
-                    else {
-                        high_idx = l;
-                    }
-                    break;
-                }
                 if (high < arr[mid]) {
-                    r = mid;
+                    r = mid - 1;
+                    high_idx = mid;
                 }
                 else {
-                    l = mid;
+                    l = mid + 1;
                 }
             }
 
