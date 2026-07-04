@@ -14,16 +14,13 @@ public class solution {
         long k = Long.parseLong(st.nextToken());
         StringTokenizer num = new StringTokenizer(br.readLine().trim());
         long [] arr = new long[n];
-        long low = Long.MAX_VALUE;
+        long low = 1;
         long high = 0;
         long sum = 0;
         for (int i = 0; i < n; i++) {
             arr[i] = Long.parseLong(num.nextToken());
             if (arr[i] > high) {
                 high = arr[i];
-            }
-            if (arr[i] < low) {
-                low = arr[i];
             }
             sum += arr[i];
         }
@@ -32,9 +29,27 @@ public class solution {
             pw.println(-1);
         }
         else {
+
             long bestl = 0;
             
-            while (low)
+            while (low <= high) {
+                long mid = (low + high) / 2;
+                long pieces = 0;
+
+                for (int i = 0; i < n; i++) {
+                    pieces += arr[i] / mid;
+                }
+
+                if (pieces < k) {
+                    high = mid - 1;
+                }
+                else {
+                    bestl = mid;
+                    low = mid + 1;
+                }
+            }
+
+            pw.println(bestl);
         }
 
         pw.close();
