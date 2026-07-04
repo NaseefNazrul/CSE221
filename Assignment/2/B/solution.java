@@ -20,12 +20,39 @@ public class solution {
 
         StringTokenizer num2 = new StringTokenizer(br.readLine().trim());
         for (int i = 0 ; i < m; i++) {
-            arr2[j] = Long.parseLong(num2.nextToken());
+            arr2[i] = Long.parseLong(num2.nextToken());
         }
 
 
 
         int i = 0;
-        int j = 0; 
+        int j = m-1; 
+        long best_diff = Long.MAX_VALUE;
+        int besti = 0;
+        int bestj = 0;
+
+        while (i < n && j >= 0) { 
+            long diff = Math.abs(arr1[i]+arr2[j]-k);
+            long sum = arr1[i] + arr2[j];
+
+            if (diff < best_diff) {
+                best_diff = diff;
+                besti = i;
+                bestj = j;
+            }
+
+            if (sum == k) {
+                break;
+            }
+            else if (sum > k) { 
+                j--;
+            }
+            else {
+                i++;
+            }
+        }
+
+        pw.println((besti+1) + " " + (bestj+1));
+        pw.close();
     }
 }
