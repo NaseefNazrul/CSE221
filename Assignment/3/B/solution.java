@@ -6,20 +6,38 @@ import java.util.StringTokenizer;
 
 
 public class solution {
+    public static long countPairs(long[] arr, int l, int r) {
+        if (l >= r) return 0;
+        int m = (l + r) / 2;
+        long total = countPairs(arr, l, m) + countPairs(arr, m + 1, r);
 
-    public static long mergeSort(long [] arr, int left, int right) {
-        if (left >= right) {
-            return 0;
+        // Now count the pairse using binary search on the left arr and linear search on the right arr
+        for (int j = m + 1; j <= r; j++) {
+            // threshold from the right array
+            long threshold = arr[j] * arr[j];
+            // binary implementation
+            int lo = l, hi = m;
+            int firstGreater = m + 1; // keeping this as the norm so later can be used for check if none exists
+            while (lo <= hi) {
+                int mid = (lo + hi) / 2;
+                if (arr[mid] > threshold) {
+                    firstGreater = mid;
+                    hi = mid - 1;      // try to find an even smaller index
+                } else {
+                    lo = mid + 1;
+                }
+            }
+            if (firstGreater <= m) {
+                total += (m - firstGreater + 1);
+            }
         }
-        else {
-            int mid = left + (right - left) / 2;
-            long a = mergeSort(arr, left, mid);
-            long b = mergeSort(arr, mid + 1, right);
-            return merger(arr, left, mid, right) + a + b;  // will return the total number of inversions from both the sides and this recursion itself
-        }
+
+        merge(arr, l, m, r);
+        return total;
     }
 
-    public static long merger(long [] arr, int left, int mid, int right) {
+    // Normal merge sort
+    public static void merge(long [] arr, int left, int mid, int right) {
         // make copies of left and right
         long [] left_arr = new long[mid - left + 1];
         long [] right_arr = new long[right - mid];
@@ -32,14 +50,10 @@ public class solution {
 
 
         // onto sorting 
-        long answer = 0; // counts the number of inversions
         int i = 0, j = 0, k = left;
         while (i < left_arr.length && j < right_arr.length) {
             if (left_arr[i] > right_arr[j]) {
                 arr[k] = right_arr[j];
-                if (left_arr[i] > right_arr[j]*right_arr[j]) {
-                    answer += (left_arr.length - i);
-                }
                 j++;
             }
             else {
@@ -52,9 +66,9 @@ public class solution {
         // Fill the rest of the arrays
         while (i < left_arr.length) arr[k++] = left_arr[i++];
         while (j < right_arr.length) arr[k++] = right_arr[j++];
-
-        return answer;
     }
+
+
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter pw = new PrintWriter(System.out);
@@ -65,10 +79,7 @@ public class solution {
             arr[i] = Integer.parseInt(num.nextToken());
         }
 
-        pw.println(mergeSort(arr, 0, n-1));
-        for (int i = 0; i < n; i++) {
-            pw.print(arr[i] + " ");
-        }
+        pw.println(countPairs(arr, 0, n-1));
         pw.close();
     }
 }
