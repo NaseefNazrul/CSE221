@@ -22,5 +22,6 @@ ABDUL MY GUY (For more reference hes another goat): https://www.youtube.com/play
 - Visualise in ur brain like draw the simulations, it really helps 
 - Take it slow, sometimes shit gets a lil bit too overwhelming
 - practice, like A LOT
+- IF you dont have time please dont take more than 30 mins solving a problem (especially when u have no idea how to solve it) and dont be shy to use AI 
 
 # GOOD LUCK GNG
