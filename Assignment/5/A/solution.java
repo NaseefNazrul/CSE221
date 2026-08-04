@@ -31,7 +31,9 @@ public class solution {
 
         for (int i = 1; i<= cities; i++) {
             Collections.sort(graph.get(i));
-        }
+        } // Finished making the Adjacent Lists
+
+
   
         boolean [] visited = new boolean[cities+1];
         Queue<Integer> queue = new LinkedList<>();
@@ -50,7 +52,7 @@ public class solution {
                     queue.offer(v);
                 }
             }
-        }
+        } // BFS search
 
         pw.println(ans);
         pw.close();

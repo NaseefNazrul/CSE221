@@ -6,54 +6,37 @@ import java.util.Collections;
 import java.util.StringTokenizer;
 
 public class solution {
-    public static boolean[] visited;
-    public static StringBuilder ans = new StringBuilder();
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter pw = new PrintWriter(System.out);
         StringTokenizer st = new StringTokenizer(br.readLine().trim());
         int cities = Integer.parseInt(st.nextToken());
         int roads = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
 
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>(); 
-
-        for (int i = 0; i <= cities; i++) {
-            graph.add(new ArrayList<>());
-        }
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
 
         int [] u = new int[roads];
         int [] v = new int[roads];
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < roads; i++) {
+        for (int i = 0 ; i < roads ;i++) {
             u[i] = Integer.parseInt(st.nextToken());
         }
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < roads; i++) {
+        for (int i = 0 ; i < roads ;i++) {
             v[i] = Integer.parseInt(st.nextToken());
         }
 
         for (int i = 0; i < roads; i++) {
             graph.get(u[i]).add(v[i]);
             graph.get(v[i]).add(u[i]);
-        }
+        } 
 
         for (int i = 1; i<= cities; i++) {
             Collections.sort(graph.get(i));
-        }
-  
-        visited = new boolean[cities+1];
-        DFS(graph,1);
-        pw.println(ans);
-        pw.close();
-    }
+        } // made the graph 
 
-    public static void DFS(ArrayList<ArrayList<Integer>> graph, int u) {
-        visited[u] = true;
-        ans.append(u).append(" ");
-        for (int v : graph.get(u)) {
-            if (visited[v] == false) {
-                DFS(graph, v);
-            }
-        }
+
     }
 }
