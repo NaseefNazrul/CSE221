@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -18,27 +19,19 @@ public class solution {
         int roads = Integer.parseInt(st.nextToken());
         int start = Integer.parseInt(st.nextToken());
         int end = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
         ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
         for (int i = 0; i <= cities; i++) {
             graph.add(new ArrayList<Integer>());
         }
 
-        int [] u = new int[roads];
-        int [] v = new int[roads];
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0 ; i < roads ;i++) {
-            u[i] = Integer.parseInt(st.nextToken());
-        }
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0 ; i < roads ;i++) {
-            v[i] = Integer.parseInt(st.nextToken());
-        }
-
         for (int i = 0; i < roads; i++) {
-            graph.get(u[i]).add(v[i]);
-            graph.get(v[i]).add(u[i]);
-        } 
+            st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            graph.get(u).add(v);
+        }
 
         for (int i = 1; i<= cities; i++) {
             Collections.sort(graph.get(i));
@@ -69,23 +62,35 @@ public class solution {
 
 
         int temp = end;
+        boolean is_k = false;
         Deque<Integer> stack = new ArrayDeque<>();
         if (parent[end] != 0) {
             while (temp != start) {
+                if (temp == k) {
+                    is_k = true;
+                }
                 stack.push(temp);
-                temp = parent[temp];
+                temp = parent[temp];    
             } // So that the path gets reversed using a stack
+            if (temp == k) {
+                    is_k = true;
+                }
             stack.push(temp);
-
-            StringBuilder path = new StringBuilder();
-            int count = -1;
-            while (!stack.isEmpty()) {
-                path.append(stack.pop()).append(" ");
-                count++;
-            }
+            if (is_k == true) { 
+                StringBuilder path = new StringBuilder();
+                int count = -1;
+                while (!stack.isEmpty()) {
+                    path.append(stack.pop()).append(" ");
+                    count++;
+                }
         
-            pw.println(count);
-            pw.println(path);
+                pw.println(count);
+                pw.println(path);
+            }
+            else {
+                pw.println(-1);
+            }
+            
         }
         else {
             pw.println(-1);
