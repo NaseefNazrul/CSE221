@@ -5,98 +5,101 @@ import java.io.PrintWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class solution {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter pw = new PrintWriter(System.out);
-        StringTokenizer st = new StringTokenizer(br.readLine().trim());
-        int cities = Integer.parseInt(st.nextToken());
-        int roads = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(st.nextToken());
-        int end = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
 
-        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i <= cities; i++) {
-            graph.add(new ArrayList<Integer>());
+
+public class solution {
+
+    public static int[] bfs(ArrayList<ArrayList<Integer>> graph, int start, int end) {
+        int [] parent = new int[graph.size()];
+        int [] visited = new int[graph.size()];
+        Queue<Integer> queue = new ArrayDeque<>();
+        queue.offer(start);
+        visited[start] = 1;
+        parent[start] = -1;
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            for (int neighbour : graph.get(current)) {
+                if (visited[neighbour] == 0) {
+                    visited[neighbour] = 1;
+                    parent[neighbour] = current;
+                    queue.offer(neighbour);
+                    if (neighbour == end) {
+                        return parent;
+                    }
+                } // Normal bfs ahh
+            }
+
+        }
+        return parent; // Just gonna return the parent cuz we will trace from here 
+    }
+
+    public static ArrayList<Integer> path(int[] parent, int start, int end) {
+        if (start != end && parent[end] == 0) {
+            return null;
         }
 
-        for (int i = 0; i < roads; i++) {
+        ArrayList<Integer> path = new ArrayList<>();
+        int curr = end;
+        while (curr != -1) {
+            path.add(curr);
+            curr = parent[curr];
+        }
+        Collections.reverse(path);
+        return path;
+    }
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter pw = new PrintWriter(System.out);
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int edges = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(st.nextToken());
+        int end = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken()); // Take inputs
+
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<Integer>()); // Add empty arraylists
+        }
+
+        // update the graph with the edges input
+        for (int i = 0; i < edges; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             graph.get(u).add(v);
         }
 
-        for (int i = 1; i<= cities; i++) {
-            Collections.sort(graph.get(i));
-        } // made the graph 
+        int [] parent_sk = bfs(graph,start,k);
+        ArrayList<Integer> path_sk = path(parent_sk, start, k);
 
-        
-        boolean [] visited = new boolean[cities+1];
-        int [] parent = new int[cities+1];
-        Queue<Integer> queue = new LinkedList<>();
-        StringBuilder ans = new StringBuilder();
+        int [] parent_ke = bfs(graph, k, end);
+        ArrayList<Integer> path_ke = path(parent_ke,k, end);
 
-        visited[start] = true;
-        queue.offer(start);
-        parent[start] = -1;
-
-        while (!queue.isEmpty()) {
-            int current = queue.poll();
-            ans.append(current).append(" ");
-
-            for (int neighbour : graph.get(current)) {
-                if (!visited[neighbour]) {
-                    parent[neighbour] = current;
-                    visited[neighbour] = true;
-                    queue.offer(neighbour);
-                }
-            }
-        } // BFS search
-
-
-        int temp = end;
-        boolean is_k = false;
-        Deque<Integer> stack = new ArrayDeque<>();
-        if (parent[end] != 0) {
-            while (temp != start) {
-                if (temp == k) {
-                    is_k = true;
-                }
-                stack.push(temp);
-                temp = parent[temp];    
-            } // So that the path gets reversed using a stack
-            if (temp == k) {
-                    is_k = true;
-                }
-            stack.push(temp);
-            if (is_k == true) { 
-                StringBuilder path = new StringBuilder();
-                int count = -1;
-                while (!stack.isEmpty()) {
-                    path.append(stack.pop()).append(" ");
-                    count++;
-                }
-        
-                pw.println(count);
-                pw.println(path);
-            }
-            else {
-                pw.println(-1);
-            }
-            
-        }
-        else {
+        if (path_ke == null || path_sk == null) {
             pw.println(-1);
         }
-        
-        
+        else {
+            ArrayList<Integer> ans_path = new ArrayList<>();
+            for (int i = 0; i < path_sk.size(); i++) {
+                ans_path.add(path_sk.get(i));
+            }
+            for (int i = 1; i < path_ke.size(); i++) {
+                ans_path.add(path_ke.get(i));
+            }
+
+            StringBuilder path = new StringBuilder();
+            for (int i = 0; i < ans_path.size(); i++) {
+                path.append(ans_path.get(i)).append(" ");
+            }
+
+            pw.println(ans_path.size()-1);
+            pw.print(path);
+        }
         pw.close();
     }
 }

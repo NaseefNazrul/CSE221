@@ -19,6 +19,7 @@ ABDUL MY GUY (For more reference hes another goat): https://www.youtube.com/play
 - Get comfortable with VS code (PLEASE lab quizzes are a pain most of the times)
 - get gud at theory, and then implement on code forces (This is a pain)
 - Understand the code, please dont memorize, never works
+- Learn new syntaxes like using an arraylist, queue, stack etc as these are all built into java (I Have no efing idea why the 221LAB does not teach these) use AI for this especially 
 - Visualise in ur brain like draw the simulations, it really helps 
 - Take it slow, sometimes shit gets a lil bit too overwhelming
 - practice, like A LOT
