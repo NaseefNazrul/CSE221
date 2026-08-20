@@ -1,0 +1,22 @@
+----------------------
+6 EAGER EAR
+EAGER
+RED
+FEE
+DEAF
+END
+EAR
+
+YES
+----------------------
+5 EAGER EAR
+EAGER
+RED
+DEAF
+END
+EAR
+
+NO
+----------------------
+
+
